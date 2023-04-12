@@ -3,6 +3,11 @@
 ?>
 
 <?php
+session_start();
+if(isset($_SESSION['loginSession'])){
+    echo "Jest sesja";
+    unset($_SESSION['loginSession']);
+}else{
     if (isset($_POST['submit'])) {
         $login = htmlspecialchars($_POST['login']);
         $pass = htmlspecialchars($_POST['password']);
@@ -20,8 +25,9 @@
                 if ($user['Login']==$login && $user['Haslo']==$pass){
                     echo 'Jestem zalogowany';
                     $flag = false;
-                    
-                    break;
+                    $_SESSION['loginSession']='start';
+                    header('location: login.php')
+                    //break;
                 }
                 // else {
                 //     echo "Błędnie podałeś login lub hasło.";
@@ -56,3 +62,4 @@
         </div>
     </div>
 </div>
+<?php } ?>
