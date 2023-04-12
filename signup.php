@@ -107,8 +107,12 @@ if (isset($_POST['submit'])) {
         </div>
     </div>
 </div>
-
 <!-- end - formularz -->
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+
 <?php
 
 if ($error[0] == "" && $error[1] == "" && $error[2] == "" && $error[3] == "" && $error[4] == "" && $error[5] && isset($_POST['submit'])) {
@@ -117,7 +121,6 @@ if ($error[0] == "" && $error[1] == "" && $error[2] == "" && $error[3] == "" && 
         echo 'Błąd połaczenia z bazą danych. Error : ' . mysqli_connect_error();
     } else {
         // wyswietlenie danych z formularza
-        echo 'Połączono z bazą danych!';
         // echo $_POST['imie'];
         // echo $_POST['nazwisko'];
         // echo $_POST['login'];
@@ -130,7 +133,12 @@ if ($error[0] == "" && $error[1] == "" && $error[2] == "" && $error[3] == "" && 
         VALUES ('$imie','$nazwisko','$login','$mail','$haslo1',true,'$datadodania')";
         mysqli_query($conn, $sql);
         mysqli_close($conn);
+
+        echo 'Dodano użytkownika!';
     }
 }
 
 ?>
+        </div>
+    </div>
+</div>
