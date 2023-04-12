@@ -2,11 +2,43 @@
     include('site/header.php');
 ?>
 
+<?php
+    if (isset($_POST['submit'])) {
+        $login = htmlspecialchars($_POST['login']);
+        $pass = htmlspecialchars($_POST['password']);
+        //echo $login ." ". $pass;
+        $conn = mysqli_connect('localhost', 'webPLA', 'admin', 'portal');
+        if (!$conn){
+            echo 'Błąd połączenia z bazą danych. Error: ' .mysqli_connect_error();
+        } else {
+            $sqlSelect = 'SELECT Login, Haslo FROM users';
+            $result = mysqli_query($conn, $sqlSelect);
+            $users = mysqli_fetch_all($result, MYSQLI_ASSOC);
+            $flag=true;
+            foreach ($users as $user){
+                //echo $user['Login'] ." - ". $user['Haslo']."<br>";
+                if ($user['Login']==$login && $user['Haslo']==$pass){
+                    echo 'Jestem zalogowany';
+                    $flag = false;
+                    
+                    break;
+                }
+                // else {
+                //     echo "Błędnie podałeś login lub hasło.";
+                // }
+            }
+        }
+        if ($flag){
+            echo 'Błąd';
+        }
+    }
+?>
+
 <div class="container">
     <div class="row">
         <div class="col-12">
-            <form action="<?php $_SERVER['PHP_SELF']; ?>" method="post">
-                <h1>ZALOGUJ SIĘ</h1>
+        <h1>Zaloguj się</h1>
+            <form action="<?php $_SERVER['PHP_SELF']; ?>" method="post"> 
                 <div class="mb-3">
                     <!-- <label for="exampleFormControlInput1" class="alert alert-danger"></label> -->
                     <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Login" name="login">
