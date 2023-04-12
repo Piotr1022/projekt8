@@ -1,4 +1,4 @@
-<?php include('header.php'); ?>
+<?php include('site/header.php'); ?>
 
 <style>
         *{
@@ -208,11 +208,10 @@
 </div></div>
         <div class="col-md-4 offset-md-2 box-margin"><div class="card" style="">
   <div class="card-body">
-    <h5 class="card-title">zaloguj się</h5>
-    <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-    <a href="#" class="card-link">Card link</a>
-    <a href="#" class="card-link">Another link</a>
+    <h5 class="card-title">Zaloguj się</h5>
+    <h6 class="card-subtitle mb-2 text-muted">Zaloguj się do strony internetowej</h6>
+    <p class="card-text">Kiedy zalogujesz się do strony, będziesz miał dostęp do wszystkich informacji na stronie.</p>
+    <a href="login.php" class="card-link">Zaloguj się</a>
   </div>
 </div></div>
     </div>

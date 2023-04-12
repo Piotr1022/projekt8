@@ -1,6 +1,6 @@
-<?php include('header.php'); ?>
+<?php include('site/header.php'); ?>
 <?php
-$error = array("", "", "", "", "",true);
+$error = array("", "", "", "", "", true);
 if (isset($_POST['submit'])) {
     $imie = htmlspecialchars($_POST['imie']);
     if ($imie == "" || strlen($imie) < 3) {
@@ -19,7 +19,7 @@ if (isset($_POST['submit'])) {
     if ($login == "" || strlen($login) < 2) {
         $error[3] = "Brak loginu.";
     }
-    $haslo1 = htmlspecialchars($_POST['haslo2']);
+    $haslo1 = htmlspecialchars($_POST['haslo1']);
     $haslo2 = htmlspecialchars($_POST['haslo2']);
     if (
         !preg_match('/^(?=.*\d)(?=.*[A-Za-z])[0-9A-Za-z!@#$%]{8,20}$/', $haslo1)
@@ -28,84 +28,109 @@ if (isset($_POST['submit'])) {
     )
         $error[4] = "Hasło musi posiadać min. 8 znaków. i być identyczne.";
     // 1wwwdAw@dwaA!aa
-    
-    if (!empty(!empty(['regulamin']))) {
-        $error[5]=true;
+
+    if (!empty($_POST['regulamin'])) {
+        $error[5] = true;
     } else {
-        $error[5]=false;
+        $error[5] = false;
     }
 }
 ?>
 
+<!-- formularz -->
 
 <div class="container">
     <div class="row">
         <div class="col-12">
-
-            
+            <!-- <form action="signup.php" method="post"> -->
             <form action="<?php $_SERVER['PHP_SELF']; ?>" method="post">
-                <h1>FORMULARZ</h1>
+                <h2>Załóż konto</h2>
                 <div class="mb-3">
-                  <label for="exampleFormControlInput1" class="alert alert-danger"><?php echo $error[0]; ?></label>
-                  <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Imię" name="imie">
+                    <?php
+                    if ($error[0] != "") {
+                    ?>
+                        <label for="" class="alert alert-warning"><?php echo $error[0]; ?></label>
+                    <?php } ?>
+                    <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Imię" name="imie">
                 </div>
                 <div class="mb-3">
-                    <label for="exampleFormControlInput1" class="alert alert-danger"><?php echo $error[1]; ?></label>
+                    <?php
+                    if ($error[1] != "") {
+                    ?>
+                        <label for="" class="alert alert-warning"><?php echo $error[1]; ?></label>
+                    <?php } ?>
                     <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Nazwisko" name="nazwisko">
                 </div>
                 <div class="mb-3">
-                    <label for="exampleFormControlInput1" class="alert alert-danger"><?php echo $error[2]; ?></label>
-                    <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Login" name="login">
+                    <?php
+                    if ($error[3] != "") {
+                    ?>
+                        <label for="" class="alert alert-warning"><?php echo $error[3]; ?></label>
+                    <?php } ?>
+                    <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="login" name="login">
                 </div>
                 <div class="mb-3">
-                    <label for="exampleFormControlInput1" class="alert alert-danger"><?php echo $error[3]; ?></label>
-                    <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="nazwa@mail.com" name="mail">
+                    <?php
+                    if ($error[2] != "") {
+                    ?>
+                        <label for="" class="alert alert-warning"><?php echo $error[2]; ?></label>
+                    <?php } ?>
+                    <input type="mail" class="form-control" id="exampleFormControlInput1" placeholder="nazwa@mail.com" name="mail">
                 </div>
                 <div class="mb-3">
-                    <label for="exampleFormControlInput1" class="alert alert-danger"><?php echo $error[4]; ?></label>
-                    <input type="password" class="form-control" id="exampleFormControlInput1" placeholder="Hasło" name="haslo1">
+                    <?php
+                    if ($error[4] != "") {
+                    ?>
+                        <label for="" class="alert alert-warning"><?php echo $error[4]; ?></label>
+                    <?php } ?>
+                    <input type="password" class="form-control" id="exampleFormControlInput1" placeholder="hasło" name="haslo1">
                 </div>
                 <div class="mb-3">
-                    <label for="exampleFormControlInput1" class="alert alert-danger"><?php echo $error[5]; ?></label>
-                    <input type="password" class="form-control" id="exampleFormControlInput1" placeholder="Powtórz hasło" name="haslo2">
+                    <input type="password" class="form-control" id="exampleFormControlInput1" placeholder="powtórz hasło" name="haslo2">
                 </div>
-                <div class="mb-3 form-check">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1" name="czek" value="regulamin">
-                    <label class="form-check-label" for="exampleCheck1" >Akceptuje regulamin strony internetowej</label>
+                <div class="form-check">
+                    <?php
+                    if (!$error[5]) {
+                    ?>
+                        <label for="" class="alert alert-warning">Musisz zaakceptować regulamin, aby korzystać z serwisu Internetowego.</label>
+                    <?php } ?>
+                    <input class="form-check-input" type="checkbox" value="regulamin" id="flexCheckChecked" name="regulamin">
+                    <label class="form-check-label" for="flexCheckChecked">
+                        Akceptuje regulamin strony Internetowej.
+                    </label>
                 </div>
                 <div class="mb-3">
-                    <button type="submit" class="btn btn-primary" name="submit">Załóż konto</button>
-                    <button type="reset" class="btn btn-primary">Resetuj</button>
+                    <button type="submit" class="btn btn-primary mb-3" name="submit">Załóż konto</button>
+                    <button type="reset" class="btn btn-primary mb-3">Wyczyść</button>
                 </div>
-                <!-- <div class="mb-3">
-                  <label for="exampleFormControlTextarea1" class="form-label">Example textarea</label>
-                  <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                </div> -->
             </form>
-
         </div>
     </div>
 </div>
 
 <!-- end - formularz -->
 <?php
-// if (preg_match('/^(?=.*\d)(?=.*[A-Za-z])[0-9A-Za-z!@#$%]{8,20}$/', '1wwwdAw@dwaA!aa'))
-//     echo "dobre hasło.";
-// else
-//     echo "błędne hasło.";
-if($error[0] == "" && $error[1] == "" && $error[2] == "" && $error[3] == "" && $error[4] == "" && $error[5]){
-    $conn = mysqli_connect('localhost', 'webPLA', 'admin', 'Portal');
-    if(!$conn){
-        echo 'Błąd połączenia : '.mysqli_connect_error();
+
+if ($error[0] == "" && $error[1] == "" && $error[2] == "" && $error[3] == "" && $error[4] == "" && $error[5] && isset($_POST['submit'])) {
+    $conn = mysqli_connect('localhost', 'webPLA', 'admin', 'portal');
+    if (!$conn) {
+        echo 'Błąd połaczenia z bazą danych. Error : ' . mysqli_connect_error();
     } else {
+        // wyswietlenie danych z formularza
         echo 'Połączono z bazą danych!';
-        echo $_POST['imie'];
-        echo $_POST['nazwisko'];
-        echo $_POST['login'];
-        echo $_POST['mail'];
-        echo $_POST['haslo1'];
-        echo $_POST['haslo2'];
-        echo $_POST['czek'];
+        // echo $_POST['imie'];
+        // echo $_POST['nazwisko'];
+        // echo $_POST['login'];
+        // echo $_POST['mail'];
+        // echo $_POST['haslo1'];
+        // echo $_POST['regulamin'];
+        $datadodania=date("Y-m-d");
+        // zmienne 
+        $sql = "INSERT INTO users (Imie, Nazwisko, Login, Mail, Haslo, Regulamin, Datadodania) 
+        VALUES ('$imie','$nazwisko','$login','$mail','$haslo1',true,'$datadodania')";
+        mysqli_query($conn, $sql);
+        mysqli_close($conn);
     }
 }
-?> 
+
+?>
