@@ -27,7 +27,7 @@ if (isset($_SESSION['loginSession'])) {
                         <div class="card-body">
                             <h5 class="card-title">Kursy</h5>
                             <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                            <a href="kurs1.php" class="btn btn-primary">Szczegóły kursu</a>
                         </div>
                     </div>
                     <br>
@@ -68,3 +68,7 @@ if (isset($_SESSION['loginSession'])) {
         </div>
 
         <?php } ?>
+
+<?php
+    include('site/footer.php');
+?>
