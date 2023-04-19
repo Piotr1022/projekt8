@@ -1,44 +1,62 @@
 <?php
-    include('site/header.php');
+include('site/header.php');
 ?>
-
-<?php
-session_start();
-if(isset($_SESSION['loginSession'])){
-    echo "Jest sesja";
-    unset($_SESSION['loginSession']);
-}else{
-    if (isset($_POST['submit'])) {
-        $login = htmlspecialchars($_POST['login']);
-        $pass = htmlspecialchars($_POST['password']);
-        //echo $login ." ". $pass;
-        $conn = mysqli_connect('localhost', 'webPLA', 'admin', 'portal');
-        if (!$conn){
-            echo 'Błąd połączenia z bazą danych. Error: ' .mysqli_connect_error();
+ <?php 
+ session_start();
+    if(isset($_SESSION['loginSession'])){
+        if(isset($_POST['logout'])) {
+        unset ($_SESSION['loginSession']);
+        header('location: login.php');
         } else {
-            $sqlSelect = 'SELECT Login, Haslo FROM users';
+    ?>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h1>Wylogowywanie</h1>
+    </div>
+    </div>
+    </div>
+    <div class="container">
+    <div class="row">
+        <div class="col-12">
+            <form action="<?php $_SERVER['PHP_SELF']; ?>" method="post"> 
+                <button type="submit" class="btn btn-primary" name='logout'>Log Out</button>
+                 </form>
+            </div>
+        </div>
+    </div>
+ <?php
+        }
+    } else {
+    if(isset($_POST['submit'])) {
+       $login = htmlspecialchars($_POST['login']);
+       $pass = htmlspecialchars($_POST['password']);
+       // echo $login . " " . $pass;
+       $conn = mysqli_connect('localhost','webPLA','admin','portal');
+       if (!$conn) {
+        echo 'Błąd połączenia z baża danych. Error : ' . mysqli_connect_error();
+       }    else {
+            $sqlSelect = 'SELECT login, haslo FROM users';
             $result = mysqli_query($conn, $sqlSelect);
             $users = mysqli_fetch_all($result, MYSQLI_ASSOC);
-            $flag=true;
-            foreach ($users as $user){
-                //echo $user['Login'] ." - ". $user['Haslo']."<br>";
-                if ($user['Login']==$login && $user['Haslo']==$pass){
-                    echo 'Jestem zalogowany';
-                    $flag = false;
-                    $_SESSION['loginSession']='start';
-                    header('location: login.php')
-                    //break;
-                }
-                // else {
-                //     echo "Błędnie podałeś login lub hasło.";
-                // }
-            }
+            $flag = true;
+            foreach ($users as $user) {
+            // echo $user['login'] . " - " . $user['haslo'] . "<br>";
+            if($user['login'] == $login && $user['haslo'] == $pass ){
+             echo "Jestem zalogowany";
+            $flag = false;
+            $_SESSION['loginSession'] = $login;
+            header('location: login.php');
+         // break;  
         }
-        if ($flag){
-            echo 'Błąd';
-        }
+      } 
+    if ($flag) echo "Błędnie podane hasło.";
+       }
     }
-?>
+    
+
+ ?>
 
 <div class="container">
     <div class="row">
@@ -62,4 +80,11 @@ if(isset($_SESSION['loginSession'])){
         </div>
     </div>
 </div>
+    
+</body>
+</html>
 <?php } ?>
+
+<?php
+    include('site/footer.php');
+?>

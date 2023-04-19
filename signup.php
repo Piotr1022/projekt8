@@ -1,6 +1,6 @@
 <?php include('site/header.php'); ?>
 <?php
-$error = array("", "", "", "", "", true);
+$error = array("", "", "", "", "", true, true);
 if (isset($_POST['submit'])) {
     $imie = htmlspecialchars($_POST['imie']);
     if ($imie == "" || strlen($imie) < 3) {
@@ -33,6 +33,14 @@ if (isset($_POST['submit'])) {
         $error[5] = true;
     } else {
         $error[5] = false;
+    }
+
+    $kod = htmlspecialchars($_POST['kod']);
+    $codesave = htmlspecialchars($_POST['codesave']);
+    if($kod == $codesave){
+        $error[6] = true;
+    }else{
+        $error[6] = false;
     }
 }
 ?>
@@ -88,6 +96,26 @@ if (isset($_POST['submit'])) {
                 <div class="mb-3">
                     <input type="password" class="form-control" id="exampleFormControlInput1" placeholder="powtórz hasło" name="haslo2">
                 </div>
+
+                <div class="row justify-content-start">
+                    <div class="col-xl-1 col-md-2 alert alert-success text-center">
+                        <?php
+                            $tmp='';
+                            $kod = array();
+                            for($i=0; $i<4; $i++){
+                                $kod[] = rand(0,9);
+                                echo $kod[$i];
+                                $tmp .= $kod[$i];
+                            }
+                        ?>
+                        <input type="hidden" name="codesave" value="<?php echo $tmp ; ?>">
+                    </div>
+                    <div class="col-xl-11 col-md-22">
+                        <input type="text"  id="exampleFormControlInput1" class="form-control" placeholder="Wpisz kod" name="kod">
+                    </div>
+                </div>
+
+
                 <div class="form-check">
                     <?php
                     if (!$error[5]) {
@@ -115,11 +143,35 @@ if (isset($_POST['submit'])) {
 
 <?php
 
-if ($error[0] == "" && $error[1] == "" && $error[2] == "" && $error[3] == "" && $error[4] == "" && $error[5] && isset($_POST['submit'])) {
+if ($error[0] == "" && $error[1] == "" && $error[2] == "" && $error[3] == "" && $error[4] == "" && $error[5] && isset($_POST['submit']) && $error[6]) {
     $conn = mysqli_connect('localhost', 'webPLA', 'admin', 'portal');
     if (!$conn) {
         echo 'Błąd połaczenia z bazą danych. Error : ' . mysqli_connect_error();
     } else {
+        $flagLogin=true;
+        $flagMail=true;
+        $sqlSelect = 'SELECT Login, Mail FROM users';
+        $result = mysqli_query($conn, $sqlSelect);
+        $users = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        foreach($users as $user1){
+            //echo $user1['Login']." ".$user1['Mail']."<br>";
+            if ($user1['Login'] == $login){
+                $flagLogin=false;
+                break;
+                //echo "<h1> JEST </h1>";
+            }
+
+        }
+        foreach($users as $user2){
+            //echo $user2['Login']." ".$user2['Mail']."<br>";
+            if ($user2['Mail'] == $mail){
+                $flagMail=false;
+                break;
+                //echo "<h1> JEST </h1>";
+            }
+
+        }
+        if($flagLogin && $flagMail){
         // wyswietlenie danych z formularza
         // echo $_POST['imie'];
         // echo $_POST['nazwisko'];
@@ -132,9 +184,12 @@ if ($error[0] == "" && $error[1] == "" && $error[2] == "" && $error[3] == "" && 
         $sql = "INSERT INTO users (Imie, Nazwisko, Login, Mail, Haslo, Regulamin, Datadodania) 
         VALUES ('$imie','$nazwisko','$login','$mail','$haslo1',true,'$datadodania')";
         mysqli_query($conn, $sql);
+        echo 'Dodano użytkownika!';
+        }else{
+            echo 'Podany login lub mail istnieje';
+        }
         mysqli_close($conn);
 
-        echo 'Dodano użytkownika!';
     }
 }
 
@@ -142,3 +197,7 @@ if ($error[0] == "" && $error[1] == "" && $error[2] == "" && $error[3] == "" && 
         </div>
     </div>
 </div>
+
+<?php
+    include('site/footer.php');
+?>

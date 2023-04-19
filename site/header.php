@@ -32,7 +32,10 @@
           <a class="nav-link" href="login.php">Log in</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link disabled">Disabled</a>
+          <a class="nav-link" href="kontakt.php">Kontakt</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="kurs.php">Kursy</a>
         </li>
       </ul>
     </div>
